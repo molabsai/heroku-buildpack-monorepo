@@ -18,16 +18,23 @@ if [ ! -f "${ENV_DIR}/APP_BASE" ]; then
 fi
 APP_BASE="$(cat "${ENV_DIR}/APP_BASE")"
 
+echo "BEFORE FILE REORGANIZE"
+ls -lah "${BUILD_DIR}"
+
 (
-    mv "${BUILD_DIR}/${APP_BASE}" "${STAGE}" &&
-    rm -rf "${BUILD_DIR}"/* &&
-    mv "${STAGE}/$(basename "$APP_BASE")"/* "${BUILD_DIR}"
+    mv "${BUILD_DIR}"/* "${STAGE}/" &&
+    mv "${STAGE}/$(basename "$APP_BASE")"/* "${BUILD_DIR}" &&
+    mkdir "${BUILD_DIR}/.monorepo" &&
+    mv "${STAGE}"/* "${BUILD_DIR}/.monorepo/"
 )
 
 if [ $? -ne 0 ]; then
     echo "FAILED to copy directory into place" | indent
     exit 1
 fi
+
+echo "AFTER FILE REORGANIZE"
+ls -lah "${BUILD_DIR}"
 
 echo "Copied ${APP_BASE} to root of app successfully" | indent
 

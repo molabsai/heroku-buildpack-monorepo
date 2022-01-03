@@ -25,7 +25,8 @@ ls -lah "${BUILD_DIR}"
     mv "${BUILD_DIR}"/* "${STAGE}/" &&
     mv "${STAGE}/$(basename "$APP_BASE")"/* "${BUILD_DIR}" &&
     mkdir "${BUILD_DIR}/.monorepo" &&
-    mv "${STAGE}"/* "${BUILD_DIR}/.monorepo/"
+    mv "${STAGE}"/* "${BUILD_DIR}/.monorepo/" &&
+    ln -s ../.. "${BUILD_DIR}/.monorepo/$(basename "$APP_BASE")"
 )
 
 if [ $? -ne 0 ]; then
@@ -35,6 +36,7 @@ fi
 
 echo "AFTER FILE REORGANIZE"
 ls -lah "${BUILD_DIR}"
+ls -lah "${BUILD_DIR}/.monorepo"
 
 echo "Copied ${APP_BASE} to root of app successfully" | indent
 

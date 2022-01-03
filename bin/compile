@@ -24,6 +24,7 @@ ls -lah "${BUILD_DIR}"
 (
     mv "${BUILD_DIR}"/* "${STAGE}/" &&
     mv "${STAGE}/$(basename "$APP_BASE")"/* "${BUILD_DIR}" &&
+    rm -d "${STAGE}/$(basename "$APP_BASE")" &&
     mkdir "${BUILD_DIR}/.monorepo" &&
     mv "${STAGE}"/* "${BUILD_DIR}/.monorepo/" &&
     ln -s ../.. "${BUILD_DIR}/.monorepo/$(basename "$APP_BASE")"
